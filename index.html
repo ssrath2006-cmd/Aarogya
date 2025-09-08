@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Aarogya - Your AI Health Assistant</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+    body {
+      background: #f9f9f9;
+      color: #333;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 20px;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+    header h1 {
+      color: #009688;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    header select {
+      padding: 5px 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 14px;
+      background: #fff;
+    }
+    section {
+      padding: 30px 20px;
+      max-width: 1100px;
+      margin: auto;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #009688;
+    }
+    /* Stats Cards */
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+    }
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 12px;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      transition: transform 0.2s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .card h3 {
+      font-size: 1.4rem;
+      margin-top: 10px;
+    }
+    .topics, .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 15px;
+    }
+    .topics .card, .features .card {
+      text-align: left;
+    }
+    /* Chatbot Button */
+    .chat-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: linear-gradient(135deg, #00bfa5, #00796b);
+      color: #fff;
+      border: none;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      font-size: 26px;
+      cursor: pointer;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    }
+    /* Chatbot Box */
+    .chatbox {
+      display: none;
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 300px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+      overflow: hidden;
+      flex-direction: column;
+    }
+    .chatbox header {
+      background: #009688;
+      color: #fff;
+      padding: 10px;
+      font-weight: 600;
+      text-align: center;
+    }
+    .chat-content {
+      max-height: 250px;
+      overflow-y: auto;
+      padding: 10px;
+      font-size: 14px;
+    }
+    .chat-input {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #ddd;
+    }
+    .chat-input input {
+      flex: 1;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    .chat-input button {
+      background: #009688;
+      color: #fff;
+      border: none;
+      margin-left: 5px;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    @media(max-width: 600px){
+      header h1 {
+        font-size: 1.4rem;
+      }
+      .chatbox {
+        width: 90%;
+        right: 5%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header>
+    <h1>🩺 Aarogya</h1>
+    <select id="language" onchange="changeLanguage()">
+      <option value="en">English</option>
+      <option value="hi">हिन्दी</option>
+      <option value="or">ଓଡ଼ିଆ</option>
+    </select>
+  </header>
+
+  <!-- Stats -->
+  <section>
+    <h2 id="stats-title">Trusted by Healthcare Communities 🌍</h2>
+    <div class="stats">
+      <div class="card"><span>📚</span><h3 id="topics-count">150+</h3><p id="topics-label">Health Topics</p></div>
+      <div class="card"><span👥></span><h3>25k+</h3><p id="users-label">Active Users</p></div>
+      <div class="card"><span>🌐</span><h3>3</h3><p id="lang-label">Languages</p></div>
+      <div class="card"><span>⚡</span><h3>99.9%</h3><p id="uptime-label">Uptime</p></div>
+    </div>
+  </section>
+
+  <!-- Topics -->
+  <section>
+    <h2 id="topics-title">Explore Health Topics 🏥</h2>
+    <div class="topics">
+      <div class="card">❤️ <strong id="cardio">Cardiovascular Health</strong><p id="cardio-desc">Heart disease prevention and management</p></div>
+      <div class="card">🩸 <strong id="diabetes">Diabetes Care</strong><p id="diabetes-desc">Blood sugar management and tips</p></div>
+      <div class="card">🧠 <strong id="mental">Mental Wellness</strong><p id="mental-desc">Manage anxiety and stress</p></div>
+      <div class="card">🎗️ <strong id="cancer">Cancer Awareness</strong><p id="cancer-desc">Early detection and prevention</p></div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section>
+    <h2 id="features-title">Why Choose Aarogya 🤖</h2>
+    <div class="features">
+      <div class="card">🌐 <strong id="multi">Multilingual Support</strong><p id="multi-desc">Available in 3 languages</p></div>
+      <div class="card">⚕️ <strong id="expert">Medical Expertise</strong><p id="expert-desc">Trusted healthcare information</p></div>
+    </div>
+  </section>
+
+  <!-- Chatbot -->
+  <button class="chat-btn" onclick="toggleChat()">💬</button>
+  <div class="chatbox" id="chatbox">
+    <header>🤖 Aarogya Chatbot</header>
+    <div class="chat-content" id="chat-content"></div>
+    <div class="chat-input">
+      <input type="text" id="chat-input" placeholder="Type your question...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const translations = {
+      en: {
+        stats: "Trusted by Healthcare Communities 🌍",
+        topics: "Explore Health Topics 🏥",
+        features: "Why Choose Aarogya 🤖",
+        healthTopics: ["Cardiovascular Health", "Diabetes Care", "Mental Wellness", "Cancer Awareness"]
+      },
+      hi: {
+        stats: "स्वास्थ्य समुदायों द्वारा विश्वसनीय 🌍",
+        topics: "स्वास्थ्य विषयों का अन्वेषण करें 🏥",
+        features: "क्यों चुनें आरोग्य 🤖",
+        healthTopics: ["हृदय स्वास्थ्य", "मधुमेह देखभाल", "मानसिक स्वास्थ्य", "कैंसर जागरूकता"]
+      },
+      or: {
+        stats: "ସ୍ୱାସ୍ଥ୍ୟ ସମୁଦାୟଙ୍କ ଦ୍ୱାରା ବିଶ୍ୱସନୀୟ 🌍",
+        topics: "ସ୍ୱାସ୍ଥ୍ୟ ବିଷୟଗୁଡିକ ଅନୁସନ୍ଧାନ କରନ୍ତୁ 🏥",
+        features: "କାହିଁକି ଚୟନ କରନ୍ତୁ ଆରୋଗ୍ୟ 🤖",
+        healthTopics: ["ହୃଦୟ ସ୍ୱାସ୍ଥ୍ୟ", "ମଧୁମେହ ଚିକିତ୍ସା", "ମାନସିକ ସ୍ୱାସ୍ଥ୍ୟ", "କ୍ୟାନ୍ସର ସଚେତନତା"]
+      }
+    };
+
+    function changeLanguage(){
+      const lang = document.getElementById('language').value;
+      document.getElementById('stats-title').innerText = translations[lang].stats;
+      document.getElementById('topics-title').innerText = translations[lang].topics;
+      document.getElementById('features-title').innerText = translations[lang].features;
+      document.getElementById('cardio').innerText = translations[lang].healthTopics[0];
+      document.getElementById('diabetes').innerText = translations[lang].healthTopics[1];
+      document.getElementById('mental').innerText = translations[lang].healthTopics[2];
+      document.getElementById('cancer').innerText = translations[lang].healthTopics[3];
+    }
+
+    function toggleChat(){
+      const chatbox = document.getElementById('chatbox');
+      chatbox.style.display = chatbox.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    function sendMessage(){
+      const input = document.getElementById('chat-input');
+      const message = input.value.trim();
+      const chatContent = document.getElementById('chat-content');
+      const lang = document.getElementById('language').value;
+
+      if(message){
+        const userMsg = document.createElement('p');
+        userMsg.style.color = '#00796b';
+        userMsg.innerText = `You: ${message}`;
+        chatContent.appendChild(userMsg);
+
+        const botMsg = document.createElement('p');
+        botMsg.style.color = '#555';
+        if(lang === 'hi') botMsg.innerText = '🤖: मैं अभी सीख रहा हूँ। बाद में उत्तर दूँगा।';
+        else if(lang === 'or') botMsg.innerText = '🤖: ମୁଁ ଏଯାବତ୍ ଶିଖୁଛି। ପରେ ଉତ୍ତର ଦେବି।';
+        else botMsg.innerText = "🤖: I'm still learning. I'll answer later.";
+
+        chatContent.appendChild(botMsg);
+        input.value = '';
+        chatContent.scrollTop = chatContent.scrollHeight;
+      }
+    }
+  </script>
+</body>
+</html>
